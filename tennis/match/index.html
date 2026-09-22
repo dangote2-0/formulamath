@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Match Point — The Tennis Formula</title><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:clamp(8px,1.4dvh,18px) 12px;}
+h1{font-size:clamp(15px,2.6dvh,22px);font-weight:900;color:#b57bff;}
+.sub{color:#8a9aaa;font-size:clamp(10px,1.4dvh,12.5px);margin:3px 0 clamp(4px,1dvh,10px);text-align:center;max-width:520px;line-height:1.4;}
+#wrap{position:relative;flex:1 1 auto;min-height:160px;width:min(94vw,520px);border-radius:14px;overflow:hidden;border:2px solid #2a3a5a;touch-action:none;user-select:none;-webkit-user-select:none;}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+#overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;background:rgba(8,10,18,.72);}
+#overlay .big{font-size:clamp(17px,3dvh,26px);font-weight:900;text-shadow:0 2px 8px #000;margin-bottom:8px;}
+#overlay .why{color:#cfe0f2;font-size:clamp(10px,1.5dvh,13px);line-height:1.45;max-width:420px;}
+#overlay .go{margin-top:10px;color:#ffe000;font-size:clamp(10px,1.4dvh,12px);font-weight:900;letter-spacing:1px;}
+#score{display:flex;gap:6px;margin-top:clamp(4px,1dvh,10px);flex-wrap:wrap;justify-content:center;align-items:center;}
+.f{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:clamp(4px,0.8dvh,7px) 12px;text-align:center;}
+.f .v{color:#ffe000;font-weight:900;font-size:clamp(12px,1.9dvh,16px);}
+.f .l{color:#8a9aaa;font-size:clamp(7px,1dvh,9px);letter-spacing:1px;}
+#note{color:#5a6a7a;font-size:clamp(8px,1.2dvh,11px);margin-top:clamp(3px,0.7dvh,7px);text-align:center;}
+a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(3px,0.8dvh,10px);letter-spacing:1px;}
+</style></head><body>
+<h1>MATCH POINT</h1>
+<div class="sub">The whole book, one game. Slide to meet the ball &mdash; where you strike it sets the angle. Real scoring. Every point explained by a formula.</div>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+  <div id="overlay">
+    <div class="big" style="color:#b57bff;">THE FINAL EXAM</div>
+    <div class="why">They serve. You return. Edge of the racket = sharp angle (page 40) &mdash; win the point or fly wide. First to GAME wins.</div>
+    <div class="go">TAP TO PLAY</div>
+  </div>
+</div>
+<div id="score">
+  <div class="f"><div class="v" id="syou">0</div><div class="l">YOU</div></div>
+  <div class="f"><div class="v" id="sopp">0</div><div class="l">THEM</div></div>
+  <div class="f"><div class="v" id="phase">READY</div><div class="l">POINT</div></div>
+</div>
+<div id="note">slide your finger anywhere on the court to move</div>
+<a class="back" href="/tennis/">&#8592; THE AR COURT</a>
+<script>
+var cv=document.getElementById('cv'),cx=cv.getContext('2d'),wrap=document.getElementById('wrap');
+var overlay=document.getElementById('overlay'),syou=document.getElementById('syou'),sopp=document.getElementById('sopp'),phaseEl=document.getElementById('phase');
+var W=0,H=0;
+function resize(){var r=wrap.getBoundingClientRect();W=cv.width=Math.round(r.width);H=cv.height=Math.round(r.height);}
+window.addEventListener('resize',resize);resize();
+
+// court geometry: u in [-1,1] across, v in [0,1] depth (0 = you, 1 = them)
+function proj(u,v){
+ var yTop=H*0.16,yBot=H*0.94;
+ var wTop=W*0.42,wBot=W*0.92;
+ var y=yBot-(yBot-yTop)*v;
+ var half=(wBot+(wTop-wBot)*v)/2;
+ return {x:W/2+u*half,y:y,half:half};
+}
+var TENNIS=['0','15','30','40'];
+var you=0,opp=0,state='idle'; // idle | armed | flight | between | over
+var ball={u:0,v:1,du:0,dir:-1,ft:1.1},lastHitter='opp',shotN=0;
+var pu=0,ou=0,oTarget=0; // player u, opponent u
+var serveTimer=null,flashT=0;
+
+function scoreText(n,m){ if(n>=3&&m>=3)return '40'; return TENNIS[Math.min(n,3)]; }
+function updScore(){
+ syou.textContent=scoreText(you,opp); sopp.textContent=scoreText(opp,you);
+ phaseEl.textContent=(you===3&&opp===3)?'DECIDER':(you>=3&&you>opp)?'GAME PT':(opp>=3&&opp>you)?'THEIR GP':'PLAY';
+}
+function show(big,color,why,go){
+ overlay.innerHTML='<div class="big" style="color:'+color+';">'+big+'</div><div class="why">'+why+'</div><div class="go">'+go+'</div>';
+ overlay.style.display='flex';
+}
+function hideOv(){overlay.style.display='none';}
+
+var FORM={
+ ace:['ACED.','#ff5252','A 193 km/h serve arrives in 0.40 s. Average human reaction is 0.25 s &mdash; that leaves 0.15 s to swing. Pages 44&ndash;45.'],
+ missRally:['OUT OF REACH.','#ff5252','Recovery maths: after every shot, back toward the centre mark &mdash; it splits their angles in half. Page 46.'],
+ youWide:['WIDE.','#ff5252','Too much angle: past the sideline the court is gone. The diagonal is only 23.77 &divide; cos &theta; metres long. Page 40.'],
+ youWinner:['WINNER!','#76ff03','You made the court longer &mdash; the crosscourt diagonal is the biggest target on the court. Page 40.'],
+ theyOut:['THEY MISSED.','#76ff03','Pressure shrinks expected value: forced to the corner, their EV went negative and the error came. Unit 10.'],
+}
+function pointOver(winner,key){
+ state='between';shotN=0;
+ if(winner==='you')you++;else opp++;
+ var done=(you>=4||opp>=4);
+ var f=FORM[key];
+ if(done){
+  state='over';
+  var won=you>opp;
+  show(won?'GAME &mdash; YOU. &#127942;':'GAME &mdash; THEM.',won?'#ffe000':'#ff5252',
+   won?'Champions are calculated. Every point you just won was geometry, probability and reaction time &mdash; the whole book in one game.'
+      :f[2]+'<br><br>Run the numbers again &mdash; the formulas do not change, your reactions do.',
+   'TAP TO PLAY AGAIN');
+  you=0;opp=0;
+ } else {
+  show(f[0],f[1],f[2],'TAP FOR NEXT POINT');
+ }
+ updScore();
+}
+function startPoint(){
+ hideOv();state='armed';updScore();
+ ball.v=1;ball.u=(Math.random()*1.2-0.6);ball.dir=-1;lastHitter='opp';shotN=0;
+ ou=ball.u;
+ serveTimer=setTimeout(function(){
+  state='flight';ball.ft=0.62; // fast serve
+  ball.du=(Math.random()*0.9-0.45)+(0-ball.u)*0.4;
+ },700+Math.random()*1300);
+}
+wrap.addEventListener('pointerdown',function(e){
+ if(state==='idle'||state==='between'||state==='over'){startPoint();return;}
+});
+wrap.addEventListener('pointermove',function(e){
+ var r=wrap.getBoundingClientRect();
+ var p=proj(0,0);
+ pu=((e.clientX-r.left)-W/2)/p.half;pu=Math.max(-1.1,Math.min(1.1,pu));
+});
+wrap.addEventListener('touchmove',function(e){e.preventDefault();var t=e.touches[0];
+ var r=wrap.getBoundingClientRect();var p=proj(0,0);
+ pu=((t.clientX-r.left)-W/2)/p.half;pu=Math.max(-1.1,Math.min(1.1,pu));
+},{passive:false});
+
+var last=performance.now();
+function frame(now){
+ var dt=Math.min(0.04,(now-last)/1000);last=now;
+ // opponent chase
+ var target=(state==='flight'&&ball.dir===1)?(ball.u+ball.du*(1-ball.v)):0;
+ var os=1.35*dt; ou+=Math.max(-os,Math.min(os,target-ou));
+ if(state==='flight'){
+  var dv=ball.dir*dt/ball.ft;
+  ball.v+=dv; ball.u+=ball.du*Math.abs(dv);
+  if(Math.abs(ball.u)>1.06){ // side exit mid-flight
+   if(ball.dir===1){pointOver('opp','youWide');}  // your shot flew wide
+   else{pointOver('you','theyOut');}              // their shot flew out
+  }
+  else if(ball.v>=1){ // reaches them
+   var reach=0.17;
+   var err=Math.random()<0.13&&shotN>0;
+   if(Math.abs(ou-ball.u)<=reach+0.04){
+    shotN++;lastHitter='opp';ball.dir=-1;ball.v=1;
+    ball.ft=Math.max(0.55,1.05*Math.pow(0.96,shotN));
+    var tu=err?(ball.u>0?-1.18:1.18):(Math.random()*1.5-0.75);
+    ball.du=(tu-ball.u);
+   } else {pointOver('you','youWinner');}
+  }
+  else if(ball.v<=0){ // reaches you
+   var hw=0.19;
+   var off=(ball.u-pu);
+   if(Math.abs(off)<=hw){
+    shotN++;lastHitter='you';ball.dir=1;ball.v=0;
+    ball.ft=Math.max(0.55,1.05*Math.pow(0.96,shotN));
+    var tu2=ball.u+(off/hw)*1.55;
+    ball.du=(tu2-ball.u);
+   } else {pointOver('opp',shotN===0?'ace':'missRally');}
+  }
+ }
+ // draw
+ cx.fillStyle='#0a2f52';cx.fillRect(0,0,W,H);
+ var g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0a2f52');g.addColorStop(1,'#1b64ad');
+ cx.fillStyle=g;cx.fillRect(0,0,W,H);
+ // court surface
+ var c00=proj(-1,0),c10=proj(1,0),c01=proj(-1,1),c11=proj(1,1);
+ cx.fillStyle='#14508a';cx.beginPath();cx.moveTo(c00.x,c00.y);cx.lineTo(c10.x,c10.y);cx.lineTo(c11.x,c11.y);cx.lineTo(c01.x,c01.y);cx.closePath();cx.fill();
+ cx.strokeStyle='#e8f2ff';cx.lineWidth=2;cx.stroke();
+ // centre + service lines
+ function seg(u1,v1,u2,v2,w,a){var p1=proj(u1,v1),p2=proj(u2,v2);cx.globalAlpha=a;cx.lineWidth=w;cx.beginPath();cx.moveTo(p1.x,p1.y);cx.lineTo(p2.x,p2.y);cx.stroke();cx.globalAlpha=1;}
+ seg(0,0,0,1,1.5,.55); seg(-1,0.5,1,0.5,3,.95); // net
+ var n1=proj(-1,0.5),n2=proj(1,0.5);
+ cx.fillStyle='rgba(255,255,255,.85)';cx.fillRect(n1.x,n1.y-3,n2.x-n1.x,3);
+ // opponent
+ var po=proj(ou,1);cx.font=Math.round(H*0.045)+'px serif';cx.textAlign='center';cx.fillText('🤾',po.x,po.y-4);
+ // player racket
+ var pp=proj(pu,0);
+ cx.fillStyle='#ffe000';
+ cx.fillRect(pp.x-W*0.085,pp.y-6,W*0.17,8);
+ // ball
+ if(state==='flight'||state==='armed'){
+  var pb=proj(ball.u,ball.v);
+  var rr=4+(1-ball.v)*7;
+  cx.fillStyle='#dfff4f';cx.shadowColor='#dfff4f';cx.shadowBlur=12;
+  cx.beginPath();cx.arc(pb.x,pb.y-((state==='armed')?10:0),rr,0,7);cx.fill();cx.shadowBlur=0;
+ }
+ if(state==='armed'){cx.fillStyle='#fff';cx.font='900 '+Math.round(H*0.032)+'px Arial';cx.fillText('WATCH THE SERVE...',W/2,H*0.09);}
+ requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+updScore();
+</script>
+</body></html>
