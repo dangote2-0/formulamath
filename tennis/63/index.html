@@ -5,7 +5,11 @@ body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-he
 h1{font-size:24px;font-weight:900;color:#ff6b00;}
 .sub{color:#8a9aaa;font-size:13px;margin:6px 0 16px;text-align:center;max-width:520px;line-height:1.5;}
 svg{width:min(94vw,600px);display:block;background:#141e30;border-radius:12px;}
-.btns{display:flex;gap:10px;margin-top:16px;}
+.me{display:flex;align-items:center;gap:10px;margin-top:14px;background:#141e30;border:1.5px solid #ff6b00;border-radius:10px;padding:10px 14px;}
+.me label{color:#ffe000;font-weight:900;font-size:13px;letter-spacing:1px;}
+.me input{width:84px;background:#0e0e12;border:1.5px solid #ff6b00;border-radius:8px;color:#ffe000;font-weight:900;font-size:20px;text-align:center;padding:7px 4px;}
+.me .u{color:#8a9aaa;font-size:13px;}
+.btns{display:flex;gap:10px;margin-top:14px;}
 button{border:none;font-weight:900;font-size:14px;padding:12px 20px;border-radius:10px;letter-spacing:1px;}
 #flat{background:#ff5252;color:#2a0505;}
 #spin{background:#76ff03;color:#12300a;}
@@ -13,45 +17,56 @@ button{border:none;font-weight:900;font-size:14px;padding:12px 20px;border-radiu
 a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:18px;letter-spacing:1px;}
 </style></head><body>
 <h1>THE SERVE SECRET</h1>
-<div class="sub">Page 63: below <b style="color:#ffe000">2.61 m</b> of contact height, a flat serve cannot land in. Watch the proof, then watch spin break the rule.</div>
+<div class="sub">Page 63: below <b style="color:#ffe000">2.61 m</b> of contact height, a flat serve cannot land in. Type <b style="color:#ff6b00">YOUR</b> contact height from page 63 and test your own serve.</div>
 <svg viewBox="0 0 420 150">
   <line x1="10" y1="130" x2="410" y2="130" stroke="#4a5f80" stroke-width="2"/>
-  <line x1="30" y1="130" x2="30" y2="58" stroke="#B8860B" stroke-width="2"/>
-  <circle cx="30" cy="58" r="4" fill="#B8860B"/>
-  <text x="30" y="144" font-size="10" fill="#8aaac8" text-anchor="middle">YOU (2.3 m)</text>
+  <line id="youline" x1="30" y1="130" x2="30" y2="69.6" stroke="#B8860B" stroke-width="2"/>
+  <circle id="youdot" cx="30" cy="69.6" r="4" fill="#B8860B"/>
+  <text id="youlabel" x="30" y="144" font-size="10" fill="#8aaac8" text-anchor="middle">YOU (2.30 m)</text>
   <line x1="270" y1="130" x2="270" y2="106" stroke="#fff" stroke-width="2.5"/>
   <text x="270" y="144" font-size="10" fill="#fff" text-anchor="middle">NET 0.914 m</text>
   <line x1="400" y1="130" x2="400" y2="122" stroke="#7fcc99" stroke-width="2.5"/>
   <text x="384" y="144" font-size="10" fill="#7fcc99" text-anchor="middle">SERVICE LINE</text>
-  <circle id="ball" cx="30" cy="58" r="5" fill="#dfff4f" opacity="0"/>
+  <circle id="ball" cx="30" cy="69.6" r="5" fill="#dfff4f" opacity="0"/>
   <text id="verdict" x="215" y="24" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff"></text>
 </svg>
+<div class="me">
+  <label>MY CONTACT HEIGHT</label>
+  <input id="h" type="number" step="0.01" min="1.5" max="3.5" value="2.30"/>
+  <span class="u">m &nbsp;(your answer from page 63)</span>
+</div>
 <div class="btns">
   <button id="flat">HIT IT FLAT</button>
   <button id="spin">BRUSH UP (SPIN)</button>
 </div>
-<div id="msg">Two serves from the same 2.3 m contact point. Only one of them can land in. The geometry decides, not the player.</div>
+<div id="msg">Measure your reach, add your jump, type it in. Then hit it flat and see what the geometry says about YOUR serve.</div>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
 var ball=document.getElementById('ball'),verdict=document.getElementById('verdict'),msg=document.getElementById('msg');
-var busy=false;
-function run(spin){if(busy)return;busy=true;verdict.textContent='';ball.setAttribute('opacity',1);
+var hIn=document.getElementById('h'),youline=document.getElementById('youline'),youdot=document.getElementById('youdot'),youlabel=document.getElementById('youlabel');
+var PX=26.26,busy=false; // 0.914 m net = 24 px, so 1 m = 26.26 px
+function getH(){var h=parseFloat(hIn.value);if(!h||h<1.5)h=1.5;if(h>3.5)h=3.5;return h;}
+function drawYou(){var h=getH(),y=130-h*PX;
+ youline.setAttribute('y2',y);youdot.setAttribute('cy',y);
+ youlabel.textContent='YOU ('+h.toFixed(2)+' m)';
+ if(!busy){ball.setAttribute('cx',30);ball.setAttribute('cy',y);}}
+hIn.addEventListener('input',drawYou);drawYou();
+function run(spin){if(busy)return;busy=true;verdict.textContent='';
+ var h=getH(),y0=130-h*PX,atNet=h*0.35,clears=atNet>=0.914;
+ ball.setAttribute('opacity',1);
  var t=0,iv=setInterval(function(){t+=0.018;var p=t;
-  var x=30+380*p;
-  var y;
-  if(!spin){y=58+(130-58)*p*0.985;}                    // near-straight line: hits net below tape
-  else{y=58+(130-58)*p+34*Math.sin(Math.PI*p)*(p-0.5);} // brushed: rises less, dips hard late
-  if(!spin){ y = 58 + 72*p; }
-  else{ y = 58 + 72*p - 26*Math.sin(Math.PI*p); }
+  var x=30+380*p,y;
+  if(spin){y=y0+(130-y0)*p-26*Math.sin(Math.PI*p);}
+  else{y=y0+(130-y0)*p;}
   ball.setAttribute('cx',x);ball.setAttribute('cy',y);
-  if(!spin && x>=270 && y>=106){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
+  if(!spin&&!clears&&x>=270){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
    verdict.setAttribute('fill','#ff5252');verdict.textContent='INTO THE NET. EVERY TIME.';
-   msg.innerHTML='From 2.3 m, the flat path is still below the tape at the net: 2.3 &times; 0.35 = 0.80 m against a 0.914 m net. <b style="color:#ff5252">Physics said no before you swung.</b>';return;}
+   msg.innerHTML='From '+h.toFixed(2)+' m, your flat path reaches the net at '+h.toFixed(2)+' &times; 0.35 = <b>'+atNet.toFixed(2)+' m</b> &mdash; below the 0.914 m tape. <b style="color:#ff5252">Physics said no before you swung.</b> Now brush up.';return;}
   if(x>=400){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
    if(spin){verdict.setAttribute('fill','#76ff03');verdict.textContent='IN. SPIN BUYS THE ANGLE.';
-    msg.innerHTML='Brushing up lifts the ball over the tape, then topspin drives it down inside the line. <b style="color:#76ff03">Swing up. Let spin bring it down.</b> That is the serve secret.';}
-   else{verdict.setAttribute('fill','#ff5252');verdict.textContent='LONG.';
-    msg.textContent='Aimed high enough to clear the net flat, it sails past the service line. Flat has no answer.';}
+    msg.innerHTML='Brushing up lifts the ball over the tape, then topspin drives it down inside the line. <b style="color:#76ff03">Swing up. Let spin bring it down.</b> That is the serve secret &mdash; at any height.';}
+   else{verdict.setAttribute('fill','#76ff03');verdict.textContent='IN &mdash; YOU CLEARED 2.61 m.';
+    msg.innerHTML='At '+h.toFixed(2)+' m your flat serve crosses the net at <b>'+atNet.toFixed(2)+' m</b> &mdash; above the 0.914 m tape. You are past the 2.61 m threshold from page 63. <b style="color:#76ff03">Flat is legal for you. Spin still makes it safer.</b>';}
   }},16);}
 document.getElementById('flat').addEventListener('click',function(){run(false);});
 document.getElementById('spin').addEventListener('click',function(){run(true);});
