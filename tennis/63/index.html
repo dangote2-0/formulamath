@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Serve Secret — The Tennis Formula</title><style>
+<title>The Serve Secret · The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;}
 body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(8px,1.6dvh,20px) 12px;}
@@ -65,12 +65,12 @@ function run(spin){if(busy)return;busy=true;verdict.textContent='';
   ball.setAttribute('cx',x);ball.setAttribute('cy',y);
   if(!spin&&!clears&&x>=270){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
    verdict.setAttribute('fill','#ff5252');verdict.textContent='INTO THE NET. EVERY TIME.';
-   msg.innerHTML='From '+h.toFixed(2)+' m, your flat path reaches the net at '+h.toFixed(2)+' &times; 0.35 = <b>'+atNet.toFixed(2)+' m</b> &mdash; below the 0.914 m tape. <b style="color:#ff5252">Physics said no before you swung.</b> Now brush up.';return;}
+   msg.innerHTML='From '+h.toFixed(2)+' m, your flat path reaches the net at '+h.toFixed(2)+' &times; 0.35 = <b>'+atNet.toFixed(2)+' m</b>, below the 0.914 m tape. <b style="color:#ff5252">Physics said no before you swung.</b> Now brush up.';return;}
   if(x>=400){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
    if(spin){verdict.setAttribute('fill','#76ff03');verdict.textContent='IN. SPIN BUYS THE ANGLE.';
-    msg.innerHTML='Brushing up lifts the ball over the tape, then topspin drives it down inside the line. <b style="color:#76ff03">Swing up. Let spin bring it down.</b> That is the serve secret &mdash; at any height.';}
-   else{verdict.setAttribute('fill','#76ff03');verdict.textContent='IN &mdash; YOU CLEARED 2.61 m.';
-    msg.innerHTML='At '+h.toFixed(2)+' m your flat serve crosses the net at <b>'+atNet.toFixed(2)+' m</b> &mdash; above the 0.914 m tape. You are past the 2.61 m threshold from page 63. <b style="color:#76ff03">Flat is legal for you. Spin still makes it safer.</b>';}
+    msg.innerHTML='Brushing up lifts the ball over the tape, then topspin drives it down inside the line. <b style="color:#76ff03">Swing up. Let spin bring it down.</b> That is the serve secret, at any height.';}
+   else{verdict.setAttribute('fill','#76ff03');verdict.textContent='IN. YOU CLEARED 2.61 m.';
+    msg.innerHTML='At '+h.toFixed(2)+' m your flat serve crosses the net at <b>'+atNet.toFixed(2)+' m</b>, above the 0.914 m tape. You are past the 2.61 m threshold from page 63. <b style="color:#76ff03">Flat is legal for you. Spin still makes it safer.</b>';}
   }},16);}
 document.getElementById('flat').addEventListener('click',function(){run(false);});
 document.getElementById('spin').addEventListener('click',function(){run(true);});

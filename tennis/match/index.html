@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Match Point — The Tennis Formula</title><style>
+<title>Match Point · The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;}
 body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:clamp(8px,1.4dvh,18px) 12px;}
@@ -19,12 +19,12 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
 a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(3px,0.8dvh,10px);letter-spacing:1px;}
 </style></head><body>
 <h1>MATCH POINT</h1>
-<div class="sub">The whole book, one game. Slide to meet the ball &mdash; where you strike it sets the angle. Real scoring. Every point explained by a formula.</div>
+<div class="sub">The whole book, one game. Slide to meet the ball. Where you strike it sets the angle. Real scoring. Every point explained by a formula.</div>
 <div id="wrap">
   <canvas id="cv"></canvas>
   <div id="overlay">
     <div class="big" style="color:#b57bff;">THE FINAL EXAM</div>
-    <div class="why">They serve. You return. Edge of the racket = sharp angle (page 40) &mdash; win the point or fly wide. First to GAME wins.</div>
+    <div class="why">They serve. You return. Edge of the racket = sharp angle (page 40): win the point or fly wide. First to GAME wins.</div>
     <div class="go">TAP TO PLAY</div>
   </div>
 </div>
@@ -68,10 +68,10 @@ function show(big,color,why,go){
 function hideOv(){overlay.style.display='none';}
 
 var FORM={
- ace:['ACED.','#ff5252','A 193 km/h serve arrives in 0.40 s. Average human reaction is 0.25 s &mdash; that leaves 0.15 s to swing. Pages 44&ndash;45.'],
- missRally:['OUT OF REACH.','#ff5252','Recovery maths: after every shot, back toward the centre mark &mdash; it splits their angles in half. Page 46.'],
+ ace:['ACED.','#ff5252','A 193 km/h serve arrives in 0.40 s. Average human reaction is 0.25 s. That leaves 0.15 s to swing. Pages 44&ndash;45.'],
+ missRally:['OUT OF REACH.','#ff5252','Recovery maths: after every shot, back toward the centre mark. It splits their angles in half. Page 46.'],
  youWide:['WIDE.','#ff5252','Too much angle: past the sideline the court is gone. The diagonal is only 23.77 &divide; cos &theta; metres long. Page 40.'],
- youWinner:['WINNER!','#76ff03','You made the court longer &mdash; the crosscourt diagonal is the biggest target on the court. Page 40.'],
+ youWinner:['WINNER!','#76ff03','You made the court longer. The crosscourt diagonal is the biggest target on the court. Page 40.'],
  theyOut:['THEY MISSED.','#76ff03','Pressure shrinks expected value: forced to the corner, their EV went negative and the error came. Unit 10.'],
 }
 function pointOver(winner,key){
@@ -82,9 +82,9 @@ function pointOver(winner,key){
  if(done){
   state='over';
   var won=you>opp;
-  show(won?'GAME &mdash; YOU. &#127942;':'GAME &mdash; THEM.',won?'#ffe000':'#ff5252',
-   won?'Champions are calculated. Every point you just won was geometry, probability and reaction time &mdash; the whole book in one game.'
-      :f[2]+'<br><br>Run the numbers again &mdash; the formulas do not change, your reactions do.',
+  show(won?'GAME: YOU. &#127942;':'GAME: THEM.',won?'#ffe000':'#ff5252',
+   won?'Champions are calculated. Every point you just won was geometry, probability and reaction time. The whole book in one game.'
+      :f[2]+'<br><br>Run the numbers again. The formulas do not change, your reactions do.',
    'TAP TO PLAY AGAIN');
   you=0;opp=0;
  } else {

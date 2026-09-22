@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Race the Serve — The Tennis Formula</title><style>
+<title>Race the Serve · The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;}
 body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;display:flex;flex-direction:column;align-items:center;padding:clamp(8px,1.4dvh,18px) 12px;overflow:hidden;}
@@ -40,7 +40,7 @@ a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-deco
   <div class="f"><div class="v">193 km/h</div><div class="l">SERVE SPEED</div></div>
   <div class="f"><div class="v">0.40 s</div><div class="l">FLIGHT TIME</div></div>
   <div class="f"><div class="v">0.25 s</div><div class="l">AVG HUMAN REACTION</div></div>
-  <div class="f"><div class="v" id="best">—</div><div class="l">YOUR BEST</div></div>
+  <div class="f"><div class="v" id="best">-</div><div class="l">YOUR BEST</div></div>
 </div>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
@@ -70,10 +70,10 @@ court.addEventListener('pointerdown',function(){
   court.style.background='';server.style.transform='translateX(-50%)';
   if(bestMs===null||ms<bestMs){bestMs=ms;best.textContent=ms+' ms';}
   var t,s;
-  if(ms<=150){t='&#128293; '+ms+' ms — INHUMAN';s='faster than the pros. tap to go again.';}
-  else if(ms<=250){t='&#127934; '+ms+' ms — RETURNED!';s='you beat the 250 ms average with '+(400-ms)+' ms left to swing. tap to go again.';}
-  else if(ms<=400){t=ms+' ms — YOU CLIPPED IT';s='reacted in time, but only '+(400-ms)+' ms to swing. tap to go again.';}
-  else{t='&#128165; ACED — '+ms+' ms';s='the ball passed you at 400 ms. that is what 193 km/h means. tap to go again.';}
+  if(ms<=150){t='&#128293; '+ms+' ms. INHUMAN';s='faster than the pros. tap to go again.';}
+  else if(ms<=250){t='&#127934; '+ms+' ms. RETURNED!';s='you beat the 250 ms average with '+(400-ms)+' ms left to swing. tap to go again.';}
+  else if(ms<=400){t=ms+' ms. YOU CLIPPED IT';s='reacted in time, but only '+(400-ms)+' ms to swing. tap to go again.';}
+  else{t='&#128165; ACED. '+ms+' ms';s='the ball passed you at 400 ms. that is what 193 km/h means. tap to go again.';}
   setMsg(t,s);setTimeout(function(){state='idle';},350);}
  else if(state==='done'){state='idle';resetBall();setMsg('TAP TO FACE THE SERVE','the ball comes at 193 km/h. tap the instant it launches.');}
 });
