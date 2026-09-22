@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camera AR · The Tennis Formula</title>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;background:#0e0e12;}
+#bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(8,10,18,.75);font-family:Arial,Helvetica,sans-serif;}
+#bar .t{color:#7bffdf;font-weight:900;font-size:14px;letter-spacing:1px;}
+#bar a{color:#B8860B;font-weight:900;font-size:12px;text-decoration:none;letter-spacing:1px;}
+#tip{position:fixed;bottom:14px;left:0;right:0;z-index:10;text-align:center;color:#c8d8ea;font-family:Arial,Helvetica,sans-serif;font-size:13px;text-shadow:0 1px 4px #000;padding:0 20px;}
+</style></head><body>
+<div id="bar"><span class="t">POINT YOUR CAMERA AT THE BOOK COVER</span><a href="/tennis/cover/">&#8592; BACK</a></div>
+<div id="tip">Hold the front cover of The Tennis Formula in view. The numbers will rise off the book.</div>
+<a-scene mindar-image="imageTargetSrc: ./targets.mind; uiScanning: yes; uiLoading: yes;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <a-entity mindar-image-target="targetIndex: 0">
+    <a-plane color="#0e2a3a" opacity="0.0" position="0 0 0" height="1.318" width="1" rotation="0 0 0"></a-plane>
+    <a-ring color="#7bffdf" radius-inner="0.62" radius-outer="0.65" position="0 0 0.05" opacity="0.8"
+      animation="property: rotation; to: 0 0 360; loop: true; dur: 9000; easing: linear"></a-ring>
+    <a-text value="40-0" color="#ffe000" position="-0.42 0.34 0.25" scale="0.42 0.42 0.42" align="center" font="mozillavr"
+      animation="property: position; to: -0.42 0.40 0.32; dir: alternate; loop: true; dur: 1800; easing: easeInOutSine"></a-text>
+    <a-text value="23.77 m" color="#7bffdf" position="0.40 0.18 0.35" scale="0.36 0.36 0.36" align="center" font="mozillavr"
+      animation="property: position; to: 0.40 0.24 0.42; dir: alternate; loop: true; dur: 2200; easing: easeInOutSine"></a-text>
+    <a-text value="193 km/h" color="#ffe000" position="-0.40 -0.05 0.3" scale="0.34 0.34 0.34" align="center" font="mozillavr"
+      animation="property: position; to: -0.40 0.01 0.38; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"></a-text>
+    <a-text value="0.914 m" color="#7bffdf" position="0.36 -0.28 0.28" scale="0.32 0.32 0.32" align="center" font="mozillavr"
+      animation="property: position; to: 0.36 -0.22 0.36; dir: alternate; loop: true; dur: 2400; easing: easeInOutSine"></a-text>
+    <a-text value="52%" color="#ffe000" position="-0.34 -0.38 0.32" scale="0.34 0.34 0.34" align="center" font="mozillavr"
+      animation="property: position; to: -0.34 -0.32 0.40; dir: alternate; loop: true; dur: 2100; easing: easeInOutSine"></a-text>
+    <a-text value="CHAMPIONS ARE CALCULATED" color="#ffffff" position="0 0.62 0.2" scale="0.22 0.22 0.22" align="center" font="mozillavr"></a-text>
+    <a-text value="formulamath.com" color="#B8860B" position="0 -0.60 0.2" scale="0.2 0.2 0.2" align="center" font="mozillavr"></a-text>
+  </a-entity>
+</a-scene>
+</body></html>
