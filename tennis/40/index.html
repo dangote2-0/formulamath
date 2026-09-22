@@ -30,18 +30,23 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
 </svg>
 <div class="controls">
   <input id="angle" type="range" min="-24" max="24" value="0"/>
-  <div class="deg" id="deg">0&#176;</div>
+  <input id="num" type="number" min="-24" max="24" value="0" style="width:74px;background:#141e30;border:1.5px solid #76ff03;border-radius:8px;color:#ffe000;font-weight:900;font-size:20px;text-align:center;padding:8px 4px;"/>
+  <div class="deg" style="font-size:15px;color:#8a9aaa;">degrees</div>
 </div>
+<div style="color:#8a9aaa;font-size:12px;margin-top:6px;">type the angle you calculated on page 40, or slide it</div>
 <button id="fire">FIRE</button>
 <div id="result"></div>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
 var slider=document.getElementById('angle'),deg=document.getElementById('deg'),aim=document.getElementById('aim'),lab=document.getElementById('deglabel');
 var ball=document.getElementById('ball'),res=document.getElementById('result'),firing=false;
-function update(){var a=+slider.value;deg.innerHTML=a+'&#176;';var rad=a*Math.PI/180;
+function update(){var a=+slider.value;var rad=a*Math.PI/180;
  var x2=18+110*Math.cos(rad),y2=61+110*Math.sin(rad);
  aim.setAttribute('x2',x2);aim.setAttribute('y2',y2);lab.innerHTML=Math.abs(a)+'&#176;';}
-slider.addEventListener('input',update);update();
+slider.addEventListener('input',function(){document.getElementById('num').value=slider.value;update();});
+var num=document.getElementById('num');
+num.addEventListener('input',function(){var v=Math.max(-24,Math.min(24,parseFloat(num.value)||0));slider.value=v;update();});
+update();
 document.getElementById('fire').addEventListener('click',function(){if(firing)return;firing=true;res.textContent='';
  var a=+slider.value,rad=a*Math.PI/180,t=0;ball.setAttribute('opacity',1);
  var iv=setInterval(function(){t+=0.03;var d=232*t;var x=18+d*Math.cos(rad),y=61+d*Math.sin(rad);
