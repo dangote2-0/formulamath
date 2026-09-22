@@ -4,41 +4,73 @@
 html,body{height:100%;}
 body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(8px,1.6dvh,24px) 12px;overflow:hidden;}
 h1{font-size:clamp(15px,2.6dvh,22px);font-weight:900;color:#ff1a75;}
-.sub{color:#8a9aaa;font-size:clamp(10px,1.4dvh,12.5px);margin:4px 0 clamp(6px,1.4dvh,18px);text-align:center;max-width:480px;line-height:1.4;}
-#scene{position:relative;flex:0 1 auto;min-height:180px;height:min(120vw,500px,calc(100dvh - 190px));aspect-ratio:18/25;max-width:86vw;perspective:800px;}
-#cover{position:absolute;inset:0;border-radius:10px;background:linear-gradient(160deg,#0b8f8f,#0a4f6e 55%,#083049);box-shadow:0 20px 60px rgba(0,0,0,.6);transform-style:preserve-3d;display:flex;flex-direction:column;align-items:center;padding:26px 16px;transition:transform .08s linear;}
-#cover .t1{font-size:clamp(18px,3.4dvh,30px);font-weight:900;color:#ffe000;text-align:center;line-height:1.02;text-shadow:0 0 18px rgba(255,224,0,.5);}
-#cover .t2{color:#dff6ff;font-size:12px;font-weight:700;margin-top:8px;text-align:center;}
-.num{position:absolute;font-weight:900;color:#7bffdf;opacity:.85;text-shadow:0 0 12px rgba(120,255,220,.7);}
-#cover .bottom{margin-top:auto;background:#083049cc;border:1px solid #7bffdf55;color:#dff6ff;font-size:11.5px;font-weight:700;padding:8px 14px;border-radius:8px;text-align:center;}
-.hint{color:#5a6a7a;font-size:clamp(9px,1.2dvh,11px);margin-top:clamp(6px,1.2dvh,16px);text-align:center;}
-a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(4px,1dvh,14px);letter-spacing:1px;}
+.sub{color:#8a9aaa;font-size:clamp(10px,1.4dvh,12.5px);margin:4px 0 clamp(6px,1.2dvh,14px);text-align:center;max-width:480px;line-height:1.4;}
+#scene{position:relative;flex:0 1 auto;min-height:180px;height:min(120vw,460px,calc(100dvh - 230px));aspect-ratio:18/25;max-width:86vw;perspective:800px;}
+#cover{position:absolute;inset:0;border-radius:10px;background:linear-gradient(160deg,#0b8f8f,#0a4f6e 55%,#083049);box-shadow:0 20px 60px rgba(0,0,0,.6);transform-style:preserve-3d;display:flex;flex-direction:column;align-items:center;padding:22px 14px;transition:transform .08s linear;}
+#cover .t1{font-size:clamp(17px,3.2dvh,28px);font-weight:900;color:#ffe000;text-align:center;line-height:1.02;text-shadow:0 0 18px rgba(255,224,0,.5);}
+#cover .t2{color:#dff6ff;font-size:clamp(9px,1.4dvh,12px);font-weight:700;margin-top:7px;text-align:center;}
+.num{position:absolute;font-weight:900;color:#7bffdf;opacity:.85;text-shadow:0 0 12px rgba(120,255,220,.7);cursor:pointer;padding:6px;transition:color .15s,opacity .15s;}
+.num.on{color:#ffe000;opacity:1;text-shadow:0 0 18px rgba(255,224,0,.9);}
+.num.dim{opacity:.3;}
+#cover .bottom{margin-top:auto;background:#083049cc;border:1px solid #7bffdf55;color:#dff6ff;font-size:clamp(9px,1.4dvh,11.5px);font-weight:700;padding:7px 12px;border-radius:8px;text-align:center;}
+#info{width:min(94vw,460px);height:clamp(52px,9.5dvh,68px);margin-top:clamp(6px,1.2dvh,14px);background:#141e30;border:1.5px solid #ff1a75;border-radius:10px;padding:8px 14px;display:flex;flex-direction:column;justify-content:center;text-align:center;overflow:hidden;}
+#info .n{color:#ffe000;font-weight:900;font-size:clamp(11px,1.7dvh,14px);letter-spacing:1px;}
+#info .w{color:#c8d8ea;font-size:clamp(9.5px,1.4dvh,12.5px);line-height:1.35;margin-top:2px;}
+#tiltbtn{display:none;margin-top:clamp(4px,0.9dvh,10px);background:#141e30;border:1px solid #7bffdf;color:#7bffdf;font-weight:900;font-size:clamp(9px,1.3dvh,11px);letter-spacing:1px;padding:6px 14px;border-radius:8px;}
+a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(4px,1dvh,12px);letter-spacing:1px;}
 </style></head><body>
 <h1>THE COVER, ALIVE</h1>
-<div class="sub">Tilt your phone. The numbers around the player move like they do in the book: always there, once you can see them.</div>
+<div class="sub">Your cover is a map of the whole book. <b style="color:#ffe000">Tap a number</b> to see the lesson hiding inside it. Tilt or drag to make it float.</div>
 <div id="scene"><div id="cover">
   <div class="t1">THE TENNIS<br>FORMULA</div>
   <div class="t2">Master the Numbers Behind the Game You Love</div>
-  <div class="num" style="top:34%;left:6%;font-size:22px;" data-d="40">40-0</div>
-  <div class="num" style="top:44%;right:8%;font-size:20px;" data-d="70">23.77m</div>
-  <div class="num" style="top:56%;left:10%;font-size:19px;" data-d="55">193 km/h</div>
-  <div class="num" style="top:64%;right:12%;font-size:18px;" data-d="30">&#960;</div>
-  <div class="num" style="top:74%;left:22%;font-size:18px;" data-d="65">0.914m</div>
-  <div class="num" style="top:28%;right:24%;font-size:17px;" data-d="45">52%</div>
+  <div class="num" style="top:34%;left:6%;font-size:clamp(15px,2.6dvh,22px);" data-d="40" data-n="40&ndash;0" data-w="A shutout game. The language of scoring &mdash; 15, 30, 40, deuce &mdash; is your very first unit, from page 8.">40-0</div>
+  <div class="num" style="top:44%;right:8%;font-size:clamp(14px,2.4dvh,20px);" data-d="70" data-n="23.77 m" data-w="The full length of the court. You measure every line of it &mdash; and check your answers &mdash; on page 39.">23.77m</div>
+  <div class="num" style="top:56%;left:10%;font-size:clamp(13px,2.3dvh,19px);" data-d="55" data-n="193 km/h" data-w="A Pete Sampras first serve. You convert it to metres per second and race it yourself on page 44.">193 km/h</div>
+  <div class="num" style="top:64%;right:12%;font-size:clamp(13px,2.2dvh,18px);" data-d="30" data-n="&#960;" data-w="Pi. The geometry that draws every arc and angle on the court &mdash; the court unit, from page 25.">&#960;</div>
+  <div class="num" style="top:74%;left:22%;font-size:clamp(13px,2.2dvh,18px);" data-d="65" data-n="0.914 m" data-w="The height of the net at the centre. Page 63 reveals the serve secret this one number creates.">0.914m</div>
+  <div class="num" style="top:28%;right:24%;font-size:clamp(12px,2.1dvh,17px);" data-d="45" data-n="52%" data-w="Win just 52% of points and you win almost every match. Small edges, huge wins &mdash; the strategy maths, from page 48.">52%</div>
   <div class="bottom">The Maths Workbook That Builds Better Tennis Players</div>
 </div></div>
-<div class="hint">no tilt sensor? drag the cover with your finger instead.</div>
+<div id="info">
+  <div class="n">EVERY NUMBER IS A LESSON</div>
+  <div class="w">Tap any number floating on the cover.</div>
+</div>
+<button id="tiltbtn">ENABLE TILT</button>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
-var cover=document.getElementById('cover'),nums=document.querySelectorAll('.num');
+var cover=document.getElementById('cover'),nums=document.querySelectorAll('.num'),info=document.getElementById('info');
 var tx=0,ty=0;
 function render(){cover.style.transform='rotateY('+tx+'deg) rotateX('+(-ty)+'deg)';
- nums.forEach(function(n){var d=+n.getAttribute('data-d');n.style.transform='translate3d('+(tx*d/50)+'px,'+(ty*d/50)+'px,'+d+'px)';});}
-window.addEventListener('deviceorientation',function(e){if(e.gamma===null)return;tx=Math.max(-18,Math.min(18,e.gamma*0.6));ty=Math.max(-14,Math.min(14,(e.beta-45)*0.4));render();});
-var drag=false,lx=0,ly=0;
+ nums.forEach(function(n){var d=+n.getAttribute('data-d');
+  var s=n.classList.contains('on')?' scale(1.25)':'';
+  n.style.transform='translate3d('+(tx*d/50)+'px,'+(ty*d/50)+'px,'+d+'px)'+s;});}
+function orient(e){if(e.gamma===null)return;btn.style.display='none';tx=Math.max(-18,Math.min(18,e.gamma*0.6));ty=Math.max(-14,Math.min(14,(e.beta-45)*0.4));render();}
+window.addEventListener('deviceorientation',orient);
+// iOS needs a user-gesture permission request for motion
+var btn=document.getElementById('tiltbtn');
+if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+ btn.style.display='block';
+ btn.addEventListener('click',function(){DeviceOrientationEvent.requestPermission().then(function(r){
+  if(r==='granted'){btn.style.display='none';window.addEventListener('deviceorientation',orient);}
+ }).catch(function(){});});
+}
+// tap a number = the lesson behind it
+nums.forEach(function(n){
+ n.addEventListener('click',function(e){e.stopPropagation();
+  var was=n.classList.contains('on');
+  nums.forEach(function(m){m.classList.remove('on');m.classList.remove('dim');});
+  if(!was){n.classList.add('on');nums.forEach(function(m){if(m!==n)m.classList.add('dim');});
+   info.innerHTML='<div class="n">'+n.getAttribute('data-n')+'</div><div class="w">'+n.getAttribute('data-w')+'</div>';}
+  else{info.innerHTML='<div class="n">EVERY NUMBER IS A LESSON</div><div class="w">Tap any number floating on the cover.</div>';}
+  render();});
+});
+// drag fallback
+var drag=false,moved=0,lx=0,ly=0;
 var scene=document.getElementById('scene');
-scene.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;ly=e.clientY;});
-window.addEventListener('pointermove',function(e){if(!drag)return;tx=Math.max(-18,Math.min(18,tx+(e.clientX-lx)*0.15));ty=Math.max(-14,Math.min(14,ty+(e.clientY-ly)*0.12));lx=e.clientX;ly=e.clientY;render();});
+scene.addEventListener('pointerdown',function(e){drag=true;moved=0;lx=e.clientX;ly=e.clientY;});
+window.addEventListener('pointermove',function(e){if(!drag)return;moved+=Math.abs(e.clientX-lx)+Math.abs(e.clientY-ly);
+ tx=Math.max(-18,Math.min(18,tx+(e.clientX-lx)*0.15));ty=Math.max(-14,Math.min(14,ty+(e.clientY-ly)*0.12));lx=e.clientX;ly=e.clientY;render();});
 window.addEventListener('pointerup',function(){drag=false;});
 render();
 </script>
