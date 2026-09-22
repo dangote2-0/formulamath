@@ -38,7 +38,27 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
   <div class="stat"><div class="v">6.40 × 4.115 m</div><div class="l">SERVICE BOX</div></div>
   <div class="stat"><div class="v">260.76 m²</div><div class="l">DOUBLES AREA</div></div>
 </div>
-<div class="hint">The ball crossing the court is travelling 23.77 metres — count it.</div>
+<div class="hint">The ball crossing the court is travelling 23.77 metres.</div>
+<div style="background:#141e30;border:1.5px solid #B8860B;border-radius:10px;padding:14px;margin-top:14px;width:min(92vw,560px);">
+  <div style="color:#ffe000;font-weight:900;font-size:14px;letter-spacing:1px;margin-bottom:8px;">CHECK YOUR PAGE 39 ANSWERS</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+    <label style="color:#8a9aaa;font-size:12px;">Singles area m&#178; <input id="c1" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
+    <label style="color:#8a9aaa;font-size:12px;">Doubles area m&#178; <input id="c2" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
+    <label style="color:#8a9aaa;font-size:12px;">Service box m&#178; <input id="c3" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
+    <button id="check" style="background:#B8860B;color:#fff;border:none;font-weight:900;font-size:13px;padding:9px 16px;border-radius:8px;">CHECK</button>
+  </div>
+  <div id="ck" style="color:#c8d8ea;font-size:12.5px;margin-top:8px;min-height:16px;"></div>
+</div>
+<script>
+document.getElementById('check').addEventListener('click',function(){
+ var T=[[+document.getElementById('c1').value,195.63],[+document.getElementById('c2').value,260.76],[+document.getElementById('c3').value,26.34]];
+ var names=['Singles','Doubles','Service box'];var out=[];
+ for(var i=0;i<3;i++){var v=T[i][0],t=T[i][1];
+  if(!v){out.push(names[i]+': type your answer');}
+  else if(Math.abs(v-t)<=0.5){out.push('&#9989; '+names[i]+' correct');}
+  else{out.push('&#10060; '+names[i]+': not quite, back to page 39');}}
+ document.getElementById('ck').innerHTML=out.join(' &nbsp;&middot;&nbsp; ');});
+</script>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
 var court=document.getElementById('court'),stage=document.getElementById('stage');
