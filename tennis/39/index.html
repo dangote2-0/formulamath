@@ -1,18 +1,25 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Court in 3D — The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 12px 40px;overflow-x:hidden;}
-h1{font-size:24px;font-weight:900;color:#00e5ff;}
-.sub{color:#8a9aaa;font-size:13px;margin:6px 0 18px;text-align:center;}
-#stage{width:min(92vw,560px);height:min(72vw,430px);perspective:900px;touch-action:none;}
+html,body{height:100%;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:clamp(8px,1.6dvh,20px) 12px;}
+h1{font-size:clamp(15px,2.7dvh,24px);font-weight:900;color:#00e5ff;}
+.sub{color:#8a9aaa;font-size:clamp(10px,1.5dvh,13px);margin:3px 0 clamp(4px,1dvh,12px);text-align:center;}
+#stage{flex:1;min-height:80px;width:min(92vw,560px);perspective:900px;touch-action:none;}
 #court{width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(55deg) rotateZ(0deg);transition:transform .05s linear;}
 svg{width:100%;height:100%;}
-.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;max-width:560px;}
-.stat{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:8px 12px;text-align:center;}
-.stat .v{color:#ffe000;font-weight:900;font-size:16px;}
-.stat .l{color:#8a9aaa;font-size:10px;letter-spacing:1px;}
-.hint{color:#5a6a7a;font-size:11px;margin-top:14px;}
-a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:20px;letter-spacing:1px;}
+.stats{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:clamp(4px,1dvh,12px);max-width:560px;}
+.stat{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:clamp(4px,0.8dvh,8px) 10px;text-align:center;}
+.stat .v{color:#ffe000;font-weight:900;font-size:clamp(11px,1.8dvh,16px);}
+.stat .l{color:#8a9aaa;font-size:clamp(7px,1.1dvh,10px);letter-spacing:1px;}
+.chk{background:#141e30;border:1.5px solid #B8860B;border-radius:10px;padding:clamp(6px,1.2dvh,12px) 12px;margin-top:clamp(4px,1dvh,12px);width:min(92vw,560px);}
+.chk .t{color:#ffe000;font-weight:900;font-size:clamp(10px,1.6dvh,14px);letter-spacing:1px;margin-bottom:6px;text-align:center;}
+.chk .r{display:flex;gap:6px;align-items:center;justify-content:center;}
+.chk input{flex:1;min-width:0;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;font-size:clamp(11px,1.6dvh,14px);padding:clamp(5px,1dvh,8px) 4px;text-align:center;}
+.chk input::placeholder{color:#5a6a7a;font-weight:700;font-size:clamp(9px,1.3dvh,12px);}
+.chk button{background:#B8860B;color:#fff;border:none;font-weight:900;font-size:clamp(10px,1.5dvh,13px);padding:clamp(5px,1dvh,9px) 14px;border-radius:8px;}
+#ck{color:#c8d8ea;font-size:clamp(9px,1.4dvh,12.5px);margin-top:5px;min-height:15px;text-align:center;}
+a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(4px,1dvh,12px);letter-spacing:1px;}
 </style></head><body>
 <h1>THE COURT IN 3D</h1>
 <div class="sub">Page 39, off the paper. Drag to spin. Every line is a measurement.</div>
@@ -36,29 +43,17 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
   <div class="stat"><div class="v">10.97 m</div><div class="l">DOUBLES WIDTH</div></div>
   <div class="stat"><div class="v">8.23 m</div><div class="l">SINGLES WIDTH</div></div>
   <div class="stat"><div class="v">6.40 × 4.115 m</div><div class="l">SERVICE BOX</div></div>
-  <div class="stat"><div class="v">260.76 m²</div><div class="l">DOUBLES AREA</div></div>
 </div>
-<div class="hint">The ball crossing the court is travelling 23.77 metres.</div>
-<div style="background:#141e30;border:1.5px solid #B8860B;border-radius:10px;padding:14px;margin-top:14px;width:min(92vw,560px);">
-  <div style="color:#ffe000;font-weight:900;font-size:14px;letter-spacing:1px;margin-bottom:8px;">CHECK YOUR PAGE 39 ANSWERS</div>
-  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-    <label style="color:#8a9aaa;font-size:12px;">Singles area m&#178; <input id="c1" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
-    <label style="color:#8a9aaa;font-size:12px;">Doubles area m&#178; <input id="c2" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
-    <label style="color:#8a9aaa;font-size:12px;">Service box m&#178; <input id="c3" type="number" step="0.01" style="width:78px;background:#0e0e12;border:1px solid #2a3a5a;border-radius:6px;color:#fff;font-weight:900;padding:6px;text-align:center;"></label>
-    <button id="check" style="background:#B8860B;color:#fff;border:none;font-weight:900;font-size:13px;padding:9px 16px;border-radius:8px;">CHECK</button>
+<div class="chk">
+  <div class="t">CHECK YOUR PAGE 39 ANSWERS</div>
+  <div class="r">
+    <input id="c1" type="number" step="0.01" placeholder="Singles m&#178;">
+    <input id="c2" type="number" step="0.01" placeholder="Doubles m&#178;">
+    <input id="c3" type="number" step="0.01" placeholder="Box m&#178;">
+    <button id="check">CHECK</button>
   </div>
-  <div id="ck" style="color:#c8d8ea;font-size:12.5px;margin-top:8px;min-height:16px;"></div>
+  <div id="ck"></div>
 </div>
-<script>
-document.getElementById('check').addEventListener('click',function(){
- var T=[[+document.getElementById('c1').value,195.63],[+document.getElementById('c2').value,260.76],[+document.getElementById('c3').value,26.34]];
- var names=['Singles','Doubles','Service box'];var out=[];
- for(var i=0;i<3;i++){var v=T[i][0],t=T[i][1];
-  if(!v){out.push(names[i]+': type your answer');}
-  else if(Math.abs(v-t)<=0.5){out.push('&#9989; '+names[i]+' correct');}
-  else{out.push('&#10060; '+names[i]+': not quite, back to page 39');}}
- document.getElementById('ck').innerHTML=out.join(' &nbsp;&middot;&nbsp; ');});
-</script>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
 var court=document.getElementById('court'),stage=document.getElementById('stage');
@@ -74,5 +69,13 @@ stage.addEventListener('touchmove',function(e){var t=e.touches[0];move(t.clientX
 window.addEventListener('touchend',function(){dragging=false;});
 var ball=document.getElementById('ball'),t=0;
 setInterval(function(){t+=0.016;var p=(t%3)/3;ball.setAttribute('cx',20+220*p);ball.setAttribute('cy',65-40*Math.sin(Math.PI*p));},16);
+document.getElementById('check').addEventListener('click',function(){
+ var T=[[+document.getElementById('c1').value,195.63],[+document.getElementById('c2').value,260.76],[+document.getElementById('c3').value,26.34]];
+ var names=['Singles','Doubles','Service box'];var out=[];
+ for(var i=0;i<3;i++){var v=T[i][0],tt=T[i][1];
+  if(!v){out.push(names[i]+': type your answer');}
+  else if(Math.abs(v-tt)<=0.5){out.push('&#9989; '+names[i]+' correct');}
+  else{out.push('&#10060; '+names[i]+': not quite, back to page 39');}}
+ document.getElementById('ck').innerHTML=out.join(' &nbsp;&middot;&nbsp; ');});
 </script>
 </body></html>

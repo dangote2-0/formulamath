@@ -1,23 +1,26 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Serve Secret — The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 12px 40px;}
-h1{font-size:24px;font-weight:900;color:#ff6b00;}
-.sub{color:#8a9aaa;font-size:13px;margin:6px 0 16px;text-align:center;max-width:520px;line-height:1.5;}
-svg{width:min(94vw,600px);display:block;background:#141e30;border-radius:12px;}
-.me{display:flex;align-items:center;gap:10px;margin-top:14px;background:#141e30;border:1.5px solid #ff6b00;border-radius:10px;padding:10px 14px;}
-.me label{color:#ffe000;font-weight:900;font-size:13px;letter-spacing:1px;}
-.me input{width:84px;background:#0e0e12;border:1.5px solid #ff6b00;border-radius:8px;color:#ffe000;font-weight:900;font-size:20px;text-align:center;padding:7px 4px;}
-.me .u{color:#8a9aaa;font-size:13px;}
-.btns{display:flex;gap:10px;margin-top:14px;}
-button{border:none;font-weight:900;font-size:14px;padding:12px 20px;border-radius:10px;letter-spacing:1px;}
+html,body{height:100%;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(8px,1.6dvh,20px) 12px;}
+h1{font-size:clamp(15px,2.7dvh,24px);font-weight:900;color:#ff6b00;}
+.sub{color:#8a9aaa;font-size:clamp(10px,1.5dvh,13px);margin:3px 0 clamp(6px,1.2dvh,14px);text-align:center;max-width:540px;line-height:1.45;}
+.fit{flex:0 1 auto;min-height:70px;max-height:34dvh;width:min(94vw,600px);display:flex;align-items:center;justify-content:center;}
+svg{width:100%;height:100%;background:#141e30;border-radius:12px;}
+.me{display:flex;align-items:center;gap:8px;margin-top:clamp(6px,1.2dvh,14px);background:#141e30;border:1.5px solid #ff6b00;border-radius:10px;padding:clamp(6px,1.2dvh,10px) 12px;max-width:94vw;flex-wrap:wrap;justify-content:center;}
+.me label{color:#ffe000;font-weight:900;font-size:clamp(10px,1.5dvh,13px);letter-spacing:1px;}
+.me input{width:clamp(64px,10dvh,84px);background:#0e0e12;border:1.5px solid #ff6b00;border-radius:8px;color:#ffe000;font-weight:900;font-size:clamp(14px,2.2dvh,20px);text-align:center;padding:clamp(4px,0.9dvh,7px) 4px;}
+.me .u{color:#8a9aaa;font-size:clamp(9px,1.4dvh,13px);}
+.btns{display:flex;gap:10px;margin-top:clamp(6px,1.2dvh,14px);}
+button{border:none;font-weight:900;font-size:clamp(11px,1.7dvh,14px);padding:clamp(8px,1.4dvh,12px) 18px;border-radius:10px;letter-spacing:1px;}
 #flat{background:#ff5252;color:#2a0505;}
 #spin{background:#76ff03;color:#12300a;}
-#msg{color:#c8d8ea;font-size:13px;margin-top:14px;min-height:40px;text-align:center;max-width:520px;line-height:1.5;}
-a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:18px;letter-spacing:1px;}
+#msg{color:#c8d8ea;font-size:clamp(10px,1.5dvh,13px);margin-top:clamp(6px,1.2dvh,12px);height:clamp(44px,9dvh,64px);overflow:hidden;text-align:center;max-width:540px;line-height:1.4;}
+a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(3px,0.8dvh,10px);letter-spacing:1px;}
 </style></head><body>
 <h1>THE SERVE SECRET</h1>
 <div class="sub">Page 63: below <b style="color:#ffe000">2.61 m</b> of contact height, a flat serve cannot land in. Type <b style="color:#ff6b00">YOUR</b> contact height from page 63 and test your own serve.</div>
+<div class="fit">
 <svg viewBox="0 0 420 150">
   <line x1="10" y1="130" x2="410" y2="130" stroke="#4a5f80" stroke-width="2"/>
   <line id="youline" x1="30" y1="130" x2="30" y2="69.6" stroke="#B8860B" stroke-width="2"/>
@@ -30,6 +33,7 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
   <circle id="ball" cx="30" cy="69.6" r="5" fill="#dfff4f" opacity="0"/>
   <text id="verdict" x="215" y="24" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff"></text>
 </svg>
+</div>
 <div class="me">
   <label>MY CONTACT HEIGHT</label>
   <input id="h" type="number" step="0.01" min="1.5" max="3.5" value="2.30"/>
@@ -44,7 +48,7 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
 <script>
 var ball=document.getElementById('ball'),verdict=document.getElementById('verdict'),msg=document.getElementById('msg');
 var hIn=document.getElementById('h'),youline=document.getElementById('youline'),youdot=document.getElementById('youdot'),youlabel=document.getElementById('youlabel');
-var PX=26.26,busy=false; // 0.914 m net = 24 px, so 1 m = 26.26 px
+var PX=26.26,busy=false;
 function getH(){var h=parseFloat(hIn.value);if(!h||h<1.5)h=1.5;if(h>3.5)h=3.5;return h;}
 function drawYou(){var h=getH(),y=130-h*PX;
  youline.setAttribute('y2',y);youdot.setAttribute('cy',y);

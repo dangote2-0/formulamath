@@ -1,19 +1,23 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fire the Ball — The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 12px 40px;}
-h1{font-size:24px;font-weight:900;color:#76ff03;}
-.sub{color:#8a9aaa;font-size:13px;margin:6px 0 16px;text-align:center;}
-svg{width:min(92vw,560px);display:block;}
-.controls{display:flex;align-items:center;gap:14px;margin-top:16px;width:min(92vw,560px);}
-input[type=range]{flex:1;accent-color:#76ff03;}
-.deg{color:#ffe000;font-weight:900;font-size:22px;width:64px;text-align:center;}
-button{background:#76ff03;color:#12300a;border:none;font-weight:900;font-size:15px;padding:12px 26px;border-radius:10px;margin-top:14px;letter-spacing:1px;}
-#result{color:#c8d8ea;font-size:13px;margin-top:12px;min-height:20px;text-align:center;}
-a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:22px;letter-spacing:1px;}
+html,body{height:100%;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:clamp(8px,1.6dvh,20px) 12px;}
+h1{font-size:clamp(15px,2.7dvh,24px);font-weight:900;color:#76ff03;}
+.sub{color:#8a9aaa;font-size:clamp(10px,1.5dvh,13px);margin:3px 0 clamp(4px,1dvh,12px);text-align:center;max-width:560px;line-height:1.4;}
+.fit{flex:1;min-height:70px;width:min(92vw,560px);display:flex;align-items:center;justify-content:center;}
+svg{width:100%;height:100%;}
+.controls{display:flex;align-items:center;gap:10px;margin-top:clamp(4px,1dvh,12px);width:min(92vw,560px);}
+input[type=range]{flex:1;accent-color:#76ff03;min-width:60px;}
+#num{width:clamp(56px,9dvh,74px);background:#141e30;border:1.5px solid #76ff03;border-radius:8px;color:#ffe000;font-weight:900;font-size:clamp(14px,2.2dvh,20px);text-align:center;padding:clamp(5px,1dvh,8px) 4px;}
+.deg{font-size:clamp(11px,1.6dvh,15px);color:#8a9aaa;font-weight:700;}
+button{background:#76ff03;color:#12300a;border:none;font-weight:900;font-size:clamp(12px,1.8dvh,15px);padding:clamp(8px,1.4dvh,12px) 22px;border-radius:10px;letter-spacing:1px;}
+#result{color:#c8d8ea;font-size:clamp(10px,1.5dvh,13px);margin-top:clamp(4px,1dvh,10px);height:clamp(30px,5.5dvh,42px);overflow:hidden;text-align:center;max-width:560px;line-height:1.35;}
+a.back{color:#B8860B;font-size:clamp(10px,1.4dvh,12px);font-weight:900;text-decoration:none;margin-top:clamp(3px,0.8dvh,10px);letter-spacing:1px;}
 </style></head><body>
 <h1>FIRE THE BALL AT YOUR ANGLE</h1>
-<div class="sub">Page 40. Pick the angle from the centre mark. Watch the geometry decide.</div>
+<div class="sub">Type the angle you calculated on page 40, or slide it. Then FIRE and watch the geometry decide.</div>
+<div class="fit">
 <svg viewBox="0 0 260 150">
   <rect x="10" y="6" width="240" height="110" fill="#2a5298" stroke="#fff" stroke-width="1.6" rx="1"/>
   <rect x="10" y="19" width="240" height="84" fill="none" stroke="#fff" stroke-width="0.9"/>
@@ -28,17 +32,17 @@ a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-
   <text x="130" y="132" fill="#8a9aaa" font-size="8" text-anchor="middle">crosscourt = longer diagonal = lower net in the middle = bigger target</text>
   <text x="130" y="146" fill="#5a6a7a" font-size="7" text-anchor="middle">the same maths you used on page 40</text>
 </svg>
+</div>
 <div class="controls">
   <input id="angle" type="range" min="-60" max="60" value="0"/>
-  <input id="num" type="number" min="-60" max="60" value="0" style="width:74px;background:#141e30;border:1.5px solid #76ff03;border-radius:8px;color:#ffe000;font-weight:900;font-size:20px;text-align:center;padding:8px 4px;"/>
-  <div class="deg" style="font-size:15px;color:#8a9aaa;">degrees</div>
+  <input id="num" type="number" min="-60" max="60" value="0"/>
+  <div class="deg">&#176;</div>
+  <button id="fire">FIRE</button>
 </div>
-<div style="color:#8a9aaa;font-size:12px;margin-top:6px;">type the angle you calculated on page 40, or slide it</div>
-<button id="fire">FIRE</button>
 <div id="result"></div>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
-var slider=document.getElementById('angle'),deg=document.getElementById('deg'),aim=document.getElementById('aim'),lab=document.getElementById('deglabel');
+var slider=document.getElementById('angle'),aim=document.getElementById('aim'),lab=document.getElementById('deglabel');
 var ball=document.getElementById('ball'),res=document.getElementById('result'),firing=false;
 function update(){var a=+slider.value;var rad=a*Math.PI/180;
  var x2=18+110*Math.cos(rad),y2=61+110*Math.sin(rad);
@@ -54,7 +58,7 @@ document.getElementById('fire').addEventListener('click',function(){if(firing)re
   var out=y<19||y>103;var landed=x>=194;
   if(out||landed||x>250){clearInterval(iv);firing=false;ball.setAttribute('opacity',0);
    if(out){res.innerHTML='<span style="color:#ff6b6b;font-weight:900">WIDE.</span> '+Math.abs(a)+'&#176; from centre leaves the court before the far baseline. Geometry says: smaller angle, or aim crosscourt.';}
-   else{var dist=(232*t*23.77/232).toFixed(1);res.innerHTML='<span style="color:#76ff03;font-weight:900">IN!</span> Your shot travelled about '+ (23.77/Math.cos(rad)).toFixed(2) +' m at '+Math.abs(a)+'&#176;. Longer angle, longer court.';}
+   else{res.innerHTML='<span style="color:#76ff03;font-weight:900">IN!</span> Your shot travelled about '+ (23.77/Math.cos(rad)).toFixed(2) +' m at '+Math.abs(a)+'&#176;. Longer angle, longer court.';}
   }},16);});
 </script>
 </body></html>
