@@ -37,8 +37,7 @@ html,body{height:100%;overflow:hidden;background:#0e0e12;}
  var box=document.createElement('div');
  box.style.cssText='position:fixed;top:52px;left:8px;right:8px;z-index:99;color:#ff8080;font:12px Arial;text-shadow:0 1px 3px #000;white-space:pre-wrap;pointer-events:none;';
  document.body.appendChild(box);
- function say(m){box.textContent=(box.textContent+'
-'+m).slice(-600);}
+ function say(m){box.textContent=(box.textContent+' | '+m).slice(-600);}
  window.addEventListener('error',function(e){say('ERR: '+e.message);});
  window.addEventListener('unhandledrejection',function(e){say('REJ: '+(e.reason&&e.reason.message||e.reason));});
  window.addEventListener('load',function(){
