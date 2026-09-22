@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Camera AR · The Tennis Formula</title>
-<script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -32,4 +32,22 @@ html,body{height:100%;overflow:hidden;background:#0e0e12;}
     <a-text value="formulamath.com" color="#B8860B" position="0 -0.60 0.2" scale="0.2 0.2 0.2" align="center" font="mozillavr"></a-text>
   </a-entity>
 </a-scene>
+<script>
+(function(){
+ var box=document.createElement('div');
+ box.style.cssText='position:fixed;top:52px;left:8px;right:8px;z-index:99;color:#ff8080;font:12px Arial;text-shadow:0 1px 3px #000;white-space:pre-wrap;pointer-events:none;';
+ document.body.appendChild(box);
+ function say(m){box.textContent=(box.textContent+'
+'+m).slice(-600);}
+ window.addEventListener('error',function(e){say('ERR: '+e.message);});
+ window.addEventListener('unhandledrejection',function(e){say('REJ: '+(e.reason&&e.reason.message||e.reason));});
+ window.addEventListener('load',function(){
+  var sc=document.querySelector('a-scene');
+  if(!sc){say('no scene');return;}
+  sc.addEventListener('arError',function(){say('AR ERROR: camera or tracking failed to start');});
+  sc.addEventListener('arReady',function(){box.textContent='';});
+  setTimeout(function(){if(!box.textContent&&!sc.systems['mindar-image-system']){say('mindar system missing');}},4000);
+ });
+})();
+</script>
 </body></html>
