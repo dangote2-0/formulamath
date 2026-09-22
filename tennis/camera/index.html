@@ -8,7 +8,10 @@ html,body{height:100%;overflow:hidden;background:#0e0e12;}
 #bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(8,10,18,.75);font-family:Arial,Helvetica,sans-serif;}
 #bar .t{color:#7bffdf;font-weight:900;font-size:13px;letter-spacing:1px;}
 #bar a{color:#B8860B;font-weight:900;font-size:12px;text-decoration:none;letter-spacing:1px;}
-#tip{position:fixed;bottom:14px;left:0;right:0;z-index:10;text-align:center;color:#c8d8ea;font-family:Arial,Helvetica,sans-serif;font-size:12px;text-shadow:0 1px 4px #000;padding:0 20px;}
+#hud{position:fixed;bottom:14px;left:0;right:0;z-index:10;display:flex;justify-content:center;gap:10px;font-family:Arial,Helvetica,sans-serif;}
+#hud .c{background:rgba(8,10,18,.8);border:1px solid #2a3a5a;border-radius:10px;padding:8px 16px;text-align:center;}
+#hud .v{color:#ffe000;font-weight:900;font-size:18px;}
+#hud .l{color:#8a9aaa;font-size:9px;letter-spacing:1px;}
 #start{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0e0e12;font-family:Arial,Helvetica,sans-serif;text-align:center;padding:20px;}
 #start .h{color:#7bffdf;font-size:22px;font-weight:900;letter-spacing:1px;margin-bottom:10px;}
 #start .w{color:#8a9aaa;font-size:13px;line-height:1.5;max-width:420px;margin-bottom:22px;}
@@ -16,32 +19,32 @@ html,body{height:100%;overflow:hidden;background:#0e0e12;}
 #start .v{color:#3a4a5a;font-size:10px;margin-top:18px;letter-spacing:1px;}
 #dbg{position:fixed;top:52px;left:8px;right:8px;z-index:30;color:#ff8080;font:12px Arial;text-shadow:0 1px 3px #000;white-space:pre-wrap;pointer-events:none;}
 </style></head><body>
-<div id="bar"><span class="t">POINT YOUR CAMERA AT THE BOOK COVER</span><a href="/tennis/cover/">&#8592; BACK</a></div>
-<div id="tip">Hold the front cover of The Tennis Formula in view. The numbers will rise off the book.</div>
+<div id="bar"><span class="t">TAP THE BALL &middot; AR GAME</span><a href="/tennis/cover/">&#8592; BACK</a></div>
+<div id="hud">
+  <div class="c"><div class="v" id="score">0</div><div class="l">SCORE</div></div>
+  <div class="c"><div class="v" id="time">30</div><div class="l">SECONDS</div></div>
+  <div class="c"><div class="v" id="best">-</div><div class="l">BEST</div></div>
+</div>
 <div id="dbg"></div>
 <div id="start">
-  <div class="h">CAMERA AR</div>
-  <div class="w">Tap the button, allow the camera, then point your phone at the front cover of the book. The numbers will rise off the paper and stay pinned to it.</div>
+  <div class="h">TAP THE BALL &middot; CAMERA AR</div>
+  <div class="w">Point your phone at the front cover of the book. A tennis ball will rise off the paper. TAP IT as fast as you can &mdash; it jumps somewhere new over the book each time. 30 seconds. Go.</div>
   <button id="go">TAP TO START</button>
-  <div class="v">v4 &middot; video-fix build</div>
+  <div class="v">v5 &middot; ball game build</div>
 </div>
-<a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: no; uiScanning: yes; uiLoading: no;" color-space="sRGB" renderer="alpha: true; colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+<a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: no; uiScanning: yes; uiLoading: no;" color-space="sRGB" renderer="alpha: true; colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .tappable; near: 0.01; far: 20">
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-  <a-entity mindar-image-target="targetIndex: 0">
-    <a-ring color="#7bffdf" radius-inner="0.62" radius-outer="0.65" position="0 0 0.05" opacity="0.8"
+  <a-entity id="anchor" mindar-image-target="targetIndex: 0">
+    <a-ring color="#7bffdf" radius-inner="0.62" radius-outer="0.65" position="0 0 0.05" opacity="0.7"
       animation="property: rotation; to: 0 0 360; loop: true; dur: 9000; easing: linear"></a-ring>
-    <a-text value="40-0" color="#ffe000" position="-0.42 0.34 0.25" scale="0.42 0.42 0.42" align="center"
-      animation="property: position; to: -0.42 0.40 0.32; dir: alternate; loop: true; dur: 1800; easing: easeInOutSine"></a-text>
-    <a-text value="23.77 m" color="#7bffdf" position="0.40 0.18 0.35" scale="0.36 0.36 0.36" align="center"
-      animation="property: position; to: 0.40 0.24 0.42; dir: alternate; loop: true; dur: 2200; easing: easeInOutSine"></a-text>
-    <a-text value="193 km/h" color="#ffe000" position="-0.40 -0.05 0.3" scale="0.34 0.34 0.34" align="center"
-      animation="property: position; to: -0.40 0.01 0.38; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"></a-text>
-    <a-text value="0.914 m" color="#7bffdf" position="0.36 -0.28 0.28" scale="0.32 0.32 0.32" align="center"
-      animation="property: position; to: 0.36 -0.22 0.36; dir: alternate; loop: true; dur: 2400; easing: easeInOutSine"></a-text>
-    <a-text value="52%" color="#ffe000" position="-0.34 -0.38 0.32" scale="0.34 0.34 0.34" align="center"
-      animation="property: position; to: -0.34 -0.32 0.40; dir: alternate; loop: true; dur: 2100; easing: easeInOutSine"></a-text>
-    <a-text value="CHAMPIONS ARE CALCULATED" color="#ffffff" position="0 0.62 0.2" scale="0.22 0.22 0.22" align="center"></a-text>
-    <a-text value="formulamath.com" color="#B8860B" position="0 -0.60 0.2" scale="0.2 0.2 0.2" align="center"></a-text>
+    <a-entity id="ballwrap" position="0 0 0.35">
+      <a-sphere id="ball" class="tappable" radius="0.11" color="#dfff4f" position="0 0 0"
+        animation="property: scale; from: 1 1 1; to: 1.25 1.25 1.25; dir: alternate; loop: true; dur: 500; easing: easeInOutSine"></a-sphere>
+      <a-ring color="#ffe000" radius-inner="0.13" radius-outer="0.15" opacity="0.9"
+        animation="property: rotation; to: 0 0 -360; loop: true; dur: 3000; easing: linear"></a-ring>
+    </a-entity>
+    <a-text id="msg3d" value="FIND THE BALL" color="#ffffff" position="0 0.62 0.2" scale="0.24 0.24 0.24" align="center"></a-text>
+    <a-text value="formulamath.com" color="#B8860B" position="0 -0.60 0.2" scale="0.18 0.18 0.18" align="center"></a-text>
   </a-entity>
 </a-scene>
 <script>
@@ -50,17 +53,47 @@ function say(m){dbg.textContent=(dbg.textContent+' | '+m).slice(-700);}
 window.addEventListener('error',function(e){say('ERR: '+e.message);});
 window.addEventListener('unhandledrejection',function(e){say('REJ: '+(e.reason&&e.reason.message||e.reason));});
 if(typeof AFRAME==='undefined'){document.getElementById('start').querySelector('.w').textContent='The 3D engine did not load. Check your connection and reload.';}
+
+var score=0,tleft=30,bestScore=null,running=false,timerIv=null,found=false;
+var scoreEl=document.getElementById('score'),timeEl=document.getElementById('time'),bestEl=document.getElementById('best');
+
+function moveBall(){
+ var x=(Math.random()*0.8-0.4),y=(Math.random()*1.0-0.5),z=0.25+Math.random()*0.3;
+ document.getElementById('ballwrap').setAttribute('position',x+' '+y+' '+z);
+}
+function setMsg(t){document.getElementById('msg3d').setAttribute('value',t);}
+function startRound(){
+ score=0;tleft=30;running=true;scoreEl.textContent='0';timeEl.textContent='30';
+ setMsg('GO!');moveBall();
+ clearInterval(timerIv);
+ timerIv=setInterval(function(){
+  if(!found)return; // clock only runs while the book is in view
+  tleft--;timeEl.textContent=tleft;
+  if(tleft<=0){clearInterval(timerIv);running=false;
+   if(bestScore===null||score>bestScore){bestScore=score;bestEl.textContent=bestScore;}
+   setMsg('SCORE '+score+' - TAP BALL TO REPLAY');}
+ },1000);
+}
+document.querySelector('a-scene').addEventListener('click',function(e){
+ var el=e.detail&&e.detail.intersectedEl;
+ if(!el||el.id!=='ball')return;
+ if(!running){startRound();return;}
+ score++;scoreEl.textContent=score;moveBall();
+});
 document.getElementById('go').addEventListener('click',function(){
  var sc=document.querySelector('a-scene');
  var kick=function(){
   var sys=sc.systems&&sc.systems['mindar-image-system'];
   if(!sys){say('mindar system missing');return;}
   sc.addEventListener('arError',function(){say('AR ERROR: camera failed to start (permission denied or unsupported)');});
+  var anchor=document.getElementById('anchor');
+  anchor.addEventListener('targetFound',function(){found=true;if(!running)setMsg('TAP THE BALL TO BEGIN');});
+  anchor.addEventListener('targetLost',function(){found=false;});
   document.getElementById('start').style.display='none';
   try{sys.start();}catch(e){say('START ERR: '+e.message);}
   var fix=function(){
    var v=document.querySelector('video');
-   if(!v){say('no video element yet');return false;}
+   if(!v){return false;}
    v.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:0;display:block;';
    var c=document.querySelector('canvas.a-canvas');
    if(c){c.style.position='fixed';c.style.zIndex='2';c.style.top='0';c.style.left='0';}
