@@ -1,46 +1,80 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Race the Serve — The Tennis Formula</title><style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 14px 40px;}
-h1{font-size:24px;font-weight:900;color:#ffe000;}
-.sub{color:#8a9aaa;font-size:13px;margin:6px 0 20px;text-align:center;max-width:520px;line-height:1.5;}
-#pad{width:min(92vw,520px);height:300px;background:#141e30;border:2px solid #2a3a5a;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;user-select:none;-webkit-user-select:none;}
-#pad.armed{border-color:#ffe000;}
-#pad.go{background:#1E5C3A;border-color:#76ff03;}
-#big{font-size:34px;font-weight:900;line-height:1.2;}
-#small{color:#8a9aaa;font-size:13px;margin-top:12px;line-height:1.5;}
-.facts{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;justify-content:center;}
-.f{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:8px 12px;text-align:center;}
-.f .v{color:#ffe000;font-weight:900;font-size:15px;}
-.f .l{color:#8a9aaa;font-size:9.5px;letter-spacing:1px;}
-a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:22px;letter-spacing:1px;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px 30px;overflow:hidden;}
+h1{font-size:22px;font-weight:900;color:#ffe000;}
+.sub{color:#8a9aaa;font-size:12.5px;margin:4px 0 12px;text-align:center;max-width:520px;line-height:1.45;}
+#court{position:relative;width:min(94vw,520px);height:min(120vw,560px);border-radius:14px;overflow:hidden;background:linear-gradient(#0a2f52 0%, #14508a 55%, #1b64ad 100%);border:2px solid #2a3a5a;touch-action:manipulation;user-select:none;-webkit-user-select:none;}
+/* court perspective lines */
+#court .line{position:absolute;background:#e8f2ff;opacity:.85;}
+#net{position:absolute;left:6%;right:6%;top:46%;height:10px;background:repeating-linear-gradient(90deg,#fff 0 3px,#0a2f52 3px 6px);border-top:2px solid #fff;opacity:.9;}
+#server{position:absolute;top:18%;left:50%;transform:translateX(-50%);font-size:34px;transition:transform .15s;}
+#ball{position:absolute;left:50%;top:26%;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #f4ff9e, #cfe23a);transform:translate(-50%,-50%) scale(.4);opacity:0;box-shadow:0 0 14px rgba(223,255,79,.8);}
+#flash{position:absolute;inset:0;background:transparent;}
+#msg{position:absolute;left:0;right:0;top:6%;text-align:center;font-weight:900;font-size:22px;text-shadow:0 2px 8px #000;}
+#msg small{display:block;font-size:12px;font-weight:700;color:#cfe0f2;margin-top:6px;text-shadow:none;}
+#stats{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
+.f{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:7px 11px;text-align:center;}
+.f .v{color:#ffe000;font-weight:900;font-size:14px;}
+.f .l{color:#8a9aaa;font-size:9px;letter-spacing:1px;}
+a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:14px;letter-spacing:1px;}
+@keyframes shake{0%,100%{transform:translateX(-50%)}25%{transform:translateX(calc(-50% - 6px))}75%{transform:translateX(calc(-50% + 6px))}}
 </style></head><body>
 <h1>RACE THE SERVE</h1>
-<div class="sub">Page 44: a 193 km/h serve reaches you in <b style="color:#ffe000">0.40 seconds</b>. Average human reaction: 0.25 s. Tap the court the instant it turns green. Can you return serve?</div>
-<div id="pad"><div id="big">TAP TO SERVE</div><div id="small">wait for green, then tap as fast as you can</div></div>
-<div class="facts">
+<div class="sub">Page 44: the serve crosses the court in <b style="color:#ffe000">0.40 s</b>. TAP THE COURT the moment the ball leaves the racket. Beat 0.40 s and you returned it.</div>
+<div id="court">
+  <div class="line" style="left:6%;right:6%;top:8%;height:2px;"></div>
+  <div class="line" style="left:14%;right:14%;top:30%;height:2px;opacity:.5;"></div>
+  <div class="line" style="left:6%;right:6%;bottom:4%;height:3px;"></div>
+  <div class="line" style="left:6%;top:8%;bottom:4%;width:2px;"></div>
+  <div class="line" style="right:6%;top:8%;bottom:4%;width:2px;"></div>
+  <div class="line" style="left:50%;top:46%;bottom:4%;width:2px;opacity:.6;"></div>
+  <div id="net"></div>
+  <div id="server">&#129338;</div>
+  <div id="ball"></div>
+  <div id="flash"></div>
+  <div id="msg">TAP TO FACE THE SERVE<small>the ball comes at 193 km/h. tap the instant it launches.</small></div>
+</div>
+<div id="stats">
   <div class="f"><div class="v">193 km/h</div><div class="l">SERVE SPEED</div></div>
-  <div class="f"><div class="v">0.40 s</div><div class="l">BALL FLIGHT</div></div>
-  <div class="f"><div class="v">0.25 s</div><div class="l">AVG REACTION</div></div>
-  <div class="f"><div class="v">0.15 s</div><div class="l">LEFT TO SWING</div></div>
+  <div class="f"><div class="v">0.40 s</div><div class="l">FLIGHT TIME</div></div>
+  <div class="f"><div class="v">0.25 s</div><div class="l">AVG HUMAN REACTION</div></div>
+  <div class="f"><div class="v" id="best">—</div><div class="l">YOUR BEST</div></div>
 </div>
 <a class="back" href="/tennis/">&#8592; THE AR COURT</a>
 <script>
-var pad=document.getElementById('pad'),big=document.getElementById('big'),small=document.getElementById('small');
-var state='idle',t0=0,timer=null;
-function reset(msg,sub){state='idle';pad.className='';big.innerHTML=msg;small.innerHTML=sub;}
-pad.addEventListener('pointerdown',function(){
- if(state==='idle'){state='armed';pad.className='armed';big.textContent='WATCH THE SERVER...';small.textContent='green means the ball is coming';
-  timer=setTimeout(function(){state='go';pad.className='go';big.textContent='RETURN!';t0=performance.now();},900+Math.random()*2100);}
- else if(state==='armed'){clearTimeout(timer);reset('TOO EARLY!','you swung before the serve. tap to try again');}
- else if(state==='go'){var ms=Math.round(performance.now()-t0);state='done';pad.className='';
-  var verdict, sub;
-  if(ms<=150){verdict='INHUMAN: '+ms+' ms';sub='faster than the pros. are you a robot? tap to go again';}
-  else if(ms<=250){verdict=ms+' ms — RETURNED!';sub='you beat the average human 250 ms. the serve arrives in 400 ms: you had '+(400-ms)+' ms to swing. tap to go again';}
-  else if(ms<=400){verdict=ms+' ms — CLIPPED IT';sub='you reacted before the ball passed you, but with only '+(400-ms)+' ms to swing. work that split step. tap to go again';}
-  else{verdict=ms+' ms — ACE.';sub='the ball was already past you at 400 ms. now you know what 193 km/h means. tap to go again';}
-  big.textContent=verdict;small.textContent=sub;setTimeout(function(){state='idle';},400);}
- else if(state==='done'){reset('TAP TO SERVE','wait for green, then tap as fast as you can');}
+var court=document.getElementById('court'),msg=document.getElementById('msg'),ball=document.getElementById('ball'),server=document.getElementById('server'),best=document.getElementById('best');
+var state='idle',t0=0,timer=null,anim=null,bestMs=null;
+function setMsg(t,s){msg.innerHTML=t+(s?'<small>'+s+'</small>':'');}
+function resetBall(){ball.style.opacity=0;ball.style.transform='translate(-50%,-50%) scale(.4)';ball.style.left='50%';ball.style.top='26%';}
+function serveAnim(){
+ // ball flies from server toward the viewer: grows + drops to bottom, ~400ms visualised slower (800ms) for drama
+ ball.style.opacity=1;var start=performance.now();
+ function step(now){var p=Math.min(1,(now-start)/800);
+  var top=26+p*66;var scale=.4+p*4.2;var drift=(Math.sin(p*Math.PI))*8;
+  ball.style.top=top+'%';ball.style.left=(50+drift*0)+'%';
+  ball.style.transform='translate(-50%,-50%) scale('+scale+')';
+  if(p<1&&state==='go'){anim=requestAnimationFrame(step);} }
+ anim=requestAnimationFrame(step);}
+court.addEventListener('pointerdown',function(){
+ if(state==='idle'){state='armed';resetBall();setMsg('WATCH THE SERVER...','the toss is up. tap the moment the ball launches.');
+  server.style.transform='translateX(-50%) scale(1.15)';
+  timer=setTimeout(function(){state='go';t0=performance.now();
+   server.style.animation='shake .2s';setTimeout(function(){server.style.animation='';},250);
+   court.style.background='linear-gradient(#0a4a2a 0%, #1E5C3A 55%, #2a7a4d 100%)';
+   setMsg('RETURN IT NOW!');serveAnim();},900+Math.random()*2200);}
+ else if(state==='armed'){clearTimeout(timer);state='idle';server.style.transform='translateX(-50%)';
+  setMsg('FOOT FAULT! YOU SWUNG EARLY','tap to face the next serve');}
+ else if(state==='go'){var ms=Math.round(performance.now()-t0);state='done';cancelAnimationFrame(anim);
+  court.style.background='';server.style.transform='translateX(-50%)';
+  if(bestMs===null||ms<bestMs){bestMs=ms;best.textContent=ms+' ms';}
+  var t,s;
+  if(ms<=150){t='&#128293; '+ms+' ms — INHUMAN';s='faster than the pros. tap to go again.';}
+  else if(ms<=250){t='&#127934; '+ms+' ms — RETURNED!';s='you beat the 250 ms average with '+(400-ms)+' ms left to swing. tap to go again.';}
+  else if(ms<=400){t=ms+' ms — YOU CLIPPED IT';s='reacted in time, but only '+(400-ms)+' ms to swing. tap to go again.';}
+  else{t='&#128165; ACED — '+ms+' ms';s='the ball passed you at 400 ms. that is what 193 km/h means. tap to go again.';}
+  setMsg(t,s);setTimeout(function(){state='idle';},350);}
+ else if(state==='done'){state='idle';resetBall();setMsg('TAP TO FACE THE SERVE','the ball comes at 193 km/h. tap the instant it launches.');}
 });
 </script>
 </body></html>
