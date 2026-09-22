@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Serve Secret — The Tennis Formula</title><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 12px 40px;}
+h1{font-size:24px;font-weight:900;color:#ff6b00;}
+.sub{color:#8a9aaa;font-size:13px;margin:6px 0 16px;text-align:center;max-width:520px;line-height:1.5;}
+svg{width:min(94vw,600px);display:block;background:#141e30;border-radius:12px;}
+.btns{display:flex;gap:10px;margin-top:16px;}
+button{border:none;font-weight:900;font-size:14px;padding:12px 20px;border-radius:10px;letter-spacing:1px;}
+#flat{background:#ff5252;color:#2a0505;}
+#spin{background:#76ff03;color:#12300a;}
+#msg{color:#c8d8ea;font-size:13px;margin-top:14px;min-height:40px;text-align:center;max-width:520px;line-height:1.5;}
+a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:18px;letter-spacing:1px;}
+</style></head><body>
+<h1>THE SERVE SECRET</h1>
+<div class="sub">Page 63: below <b style="color:#ffe000">2.61 m</b> of contact height, a flat serve cannot land in. Watch the proof, then watch spin break the rule.</div>
+<svg viewBox="0 0 420 150">
+  <line x1="10" y1="130" x2="410" y2="130" stroke="#4a5f80" stroke-width="2"/>
+  <line x1="30" y1="130" x2="30" y2="58" stroke="#B8860B" stroke-width="2"/>
+  <circle cx="30" cy="58" r="4" fill="#B8860B"/>
+  <text x="30" y="144" font-size="10" fill="#8aaac8" text-anchor="middle">YOU (2.3 m)</text>
+  <line x1="270" y1="130" x2="270" y2="106" stroke="#fff" stroke-width="2.5"/>
+  <text x="270" y="144" font-size="10" fill="#fff" text-anchor="middle">NET 0.914 m</text>
+  <line x1="400" y1="130" x2="400" y2="122" stroke="#7fcc99" stroke-width="2.5"/>
+  <text x="384" y="144" font-size="10" fill="#7fcc99" text-anchor="middle">SERVICE LINE</text>
+  <circle id="ball" cx="30" cy="58" r="5" fill="#dfff4f" opacity="0"/>
+  <text id="verdict" x="215" y="24" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff"></text>
+</svg>
+<div class="btns">
+  <button id="flat">HIT IT FLAT</button>
+  <button id="spin">BRUSH UP (SPIN)</button>
+</div>
+<div id="msg">Two serves from the same 2.3 m contact point. Only one of them can land in. The geometry decides, not the player.</div>
+<a class="back" href="/tennis/">&#8592; THE AR COURT</a>
+<script>
+var ball=document.getElementById('ball'),verdict=document.getElementById('verdict'),msg=document.getElementById('msg');
+var busy=false;
+function run(spin){if(busy)return;busy=true;verdict.textContent='';ball.setAttribute('opacity',1);
+ var t=0,iv=setInterval(function(){t+=0.018;var p=t;
+  var x=30+380*p;
+  var y;
+  if(!spin){y=58+(130-58)*p*0.985;}                    // near-straight line: hits net below tape
+  else{y=58+(130-58)*p+34*Math.sin(Math.PI*p)*(p-0.5);} // brushed: rises less, dips hard late
+  if(!spin){ y = 58 + 72*p; }
+  else{ y = 58 + 72*p - 26*Math.sin(Math.PI*p); }
+  ball.setAttribute('cx',x);ball.setAttribute('cy',y);
+  if(!spin && x>=270 && y>=106){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
+   verdict.setAttribute('fill','#ff5252');verdict.textContent='INTO THE NET. EVERY TIME.';
+   msg.innerHTML='From 2.3 m, the flat path is still below the tape at the net: 2.3 &times; 0.35 = 0.80 m against a 0.914 m net. <b style="color:#ff5252">Physics said no before you swung.</b>';return;}
+  if(x>=400){clearInterval(iv);busy=false;ball.setAttribute('opacity',0);
+   if(spin){verdict.setAttribute('fill','#76ff03');verdict.textContent='IN. SPIN BUYS THE ANGLE.';
+    msg.innerHTML='Brushing up lifts the ball over the tape, then topspin drives it down inside the line. <b style="color:#76ff03">Swing up. Let spin bring it down.</b> That is the serve secret.';}
+   else{verdict.setAttribute('fill','#ff5252');verdict.textContent='LONG.';
+    msg.textContent='Aimed high enough to clear the net flat, it sails past the service line. Flat has no answer.';}
+  }},16);}
+document.getElementById('flat').addEventListener('click',function(){run(false);});
+document.getElementById('spin').addEventListener('click',function(){run(true);});
+</script>
+</body></html>

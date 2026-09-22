@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Race the Serve — The Tennis Formula</title><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0e0e12;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 14px 40px;}
+h1{font-size:24px;font-weight:900;color:#ffe000;}
+.sub{color:#8a9aaa;font-size:13px;margin:6px 0 20px;text-align:center;max-width:520px;line-height:1.5;}
+#pad{width:min(92vw,520px);height:300px;background:#141e30;border:2px solid #2a3a5a;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;user-select:none;-webkit-user-select:none;}
+#pad.armed{border-color:#ffe000;}
+#pad.go{background:#1E5C3A;border-color:#76ff03;}
+#big{font-size:34px;font-weight:900;line-height:1.2;}
+#small{color:#8a9aaa;font-size:13px;margin-top:12px;line-height:1.5;}
+.facts{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;justify-content:center;}
+.f{background:#141e30;border:1px solid #2a3a5a;border-radius:8px;padding:8px 12px;text-align:center;}
+.f .v{color:#ffe000;font-weight:900;font-size:15px;}
+.f .l{color:#8a9aaa;font-size:9.5px;letter-spacing:1px;}
+a.back{color:#B8860B;font-size:12px;font-weight:900;text-decoration:none;margin-top:22px;letter-spacing:1px;}
+</style></head><body>
+<h1>RACE THE SERVE</h1>
+<div class="sub">Page 44: a 193 km/h serve reaches you in <b style="color:#ffe000">0.40 seconds</b>. Average human reaction: 0.25 s. Tap the court the instant it turns green. Can you return serve?</div>
+<div id="pad"><div id="big">TAP TO SERVE</div><div id="small">wait for green, then tap as fast as you can</div></div>
+<div class="facts">
+  <div class="f"><div class="v">193 km/h</div><div class="l">SERVE SPEED</div></div>
+  <div class="f"><div class="v">0.40 s</div><div class="l">BALL FLIGHT</div></div>
+  <div class="f"><div class="v">0.25 s</div><div class="l">AVG REACTION</div></div>
+  <div class="f"><div class="v">0.15 s</div><div class="l">LEFT TO SWING</div></div>
+</div>
+<a class="back" href="/tennis/">&#8592; THE AR COURT</a>
+<script>
+var pad=document.getElementById('pad'),big=document.getElementById('big'),small=document.getElementById('small');
+var state='idle',t0=0,timer=null;
+function reset(msg,sub){state='idle';pad.className='';big.innerHTML=msg;small.innerHTML=sub;}
+pad.addEventListener('pointerdown',function(){
+ if(state==='idle'){state='armed';pad.className='armed';big.textContent='WATCH THE SERVER...';small.textContent='green means the ball is coming';
+  timer=setTimeout(function(){state='go';pad.className='go';big.textContent='RETURN!';t0=performance.now();},900+Math.random()*2100);}
+ else if(state==='armed'){clearTimeout(timer);reset('TOO EARLY!','you swung before the serve. tap to try again');}
+ else if(state==='go'){var ms=Math.round(performance.now()-t0);state='done';pad.className='';
+  var verdict, sub;
+  if(ms<=150){verdict='INHUMAN: '+ms+' ms';sub='faster than the pros. are you a robot? tap to go again';}
+  else if(ms<=250){verdict=ms+' ms — RETURNED!';sub='you beat the average human 250 ms. the serve arrives in 400 ms: you had '+(400-ms)+' ms to swing. tap to go again';}
+  else if(ms<=400){verdict=ms+' ms — CLIPPED IT';sub='you reacted before the ball passed you, but with only '+(400-ms)+' ms to swing. work that split step. tap to go again';}
+  else{verdict=ms+' ms — ACE.';sub='the ball was already past you at 400 ms. now you know what 193 km/h means. tap to go again';}
+  big.textContent=verdict;small.textContent=sub;setTimeout(function(){state='idle';},400);}
+ else if(state==='done'){reset('TAP TO SERVE','wait for green, then tap as fast as you can');}
+});
+</script>
+</body></html>
